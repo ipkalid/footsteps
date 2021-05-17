@@ -1,20 +1,26 @@
 PODS:
   - Flutter (1.0.0)
+  - path_provider (0.0.1):
+    - Flutter
   - pedometer (0.0.1):
     - Flutter
 
 DEPENDENCIES:
   - Flutter (from `Flutter`)
+  - path_provider (from `.symlinks/plugins/path_provider/ios`)
   - pedometer (from `.symlinks/plugins/pedometer/ios`)
 
 EXTERNAL SOURCES:
   Flutter:
     :path: Flutter
+  path_provider:
+    :path: ".symlinks/plugins/path_provider/ios"
   pedometer:
     :path: ".symlinks/plugins/pedometer/ios"
 
 SPEC CHECKSUMS:
   Flutter: 434fef37c0980e73bb6479ef766c45957d4b510c
+  path_provider: abfe2b5c733d04e238b0d8691db0cfd63a27a93c
   pedometer: 381969883680ade42559782cc41a3bbd453d8234
 
 PODFILE CHECKSUM: de2120689bd64c50778c43ebcd6de450aa1587e0

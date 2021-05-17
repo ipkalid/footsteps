@@ -1,4 +1,8 @@
 class ImagePath {
+  //logo
+  static const logo = "assets/logo/logo.png";
+  static const crop_logo = "assets/logo/crop_logo.png";
+
   //illustrations
   static const gift = "assets/illustrations/gift.png";
   static const walk = "assets/illustrations/walk.png";

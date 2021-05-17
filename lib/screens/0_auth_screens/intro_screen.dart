@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:footsteps/helpers/image_path.dart';
+import 'package:footsteps/screens/0_auth_screens/signup_screen.dart';
 import 'package:footsteps/screens/0_auth_screens/widgets/intro_list.dart';
 import 'package:footsteps/screens/0_auth_screens/widgets/intro_model.dart';
 import 'package:footsteps/styles/app_colors.dart';
+import 'package:footsteps/widgets/main_button.dart';
 
 class IntroScreen extends StatefulWidget {
   static const routeName = '/intro-screen';
@@ -18,18 +20,22 @@ class _IntroScreenState extends State<IntroScreen> {
         image: ImagePath.walk,
         title: "Walk",
         description:
-            "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."),
+            "Walk and get fit and joins millions of people doing this healthy happit"),
     IntroMessage(
         image: ImagePath.win,
-        title: "ee",
+        title: "Challange",
         description:
             "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."),
     IntroMessage(
         image: ImagePath.gift,
-        title: "ee",
+        title: "Gift",
         description:
             "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."),
-    IntroMessage(image: ImagePath.sign, title: "", description: ""),
+    IntroMessage(
+        image: ImagePath.sign,
+        title: "Welecome",
+        description:
+            "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."),
     //IntroMessage(description: "ccc", title: "cc"),
   ];
   //@override
@@ -52,8 +58,8 @@ class _IntroScreenState extends State<IntroScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            //Image.asset("assets/illustrations/gift.png"),
             Expanded(
+              flex: 2,
               child: IntroList(
                 messages: introMessages,
                 pageController: pageController,
@@ -66,12 +72,10 @@ class _IntroScreenState extends State<IntroScreen> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 32),
-                      child: ElevatedButton(
-                        child: Text("kk"),
-                        onPressed: () {},
-                        //onPressed: () => _goToSignUpPage(context),
-                        //hideShadow: true,
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      child: MainButton(
+                        label: 'Sign Up',
+                        onPressed: () => goToSignUpScreen(),
                       ),
                     ),
                   ],
@@ -152,44 +156,6 @@ class _IntroScreenState extends State<IntroScreen> {
     );
   }
 
-  // void _goToSignUpPage(BuildContext context) {
-  //   showModalBottomSheet(
-  //     enableDrag: true,
-  //     isDismissible: false,
-  //     isScrollControlled: true,
-  //     shape: RoundedRectangleBorder(
-  //       borderRadius: BorderRadius.vertical(
-  //         top: Radius.circular(32),
-  //       ),
-  //     ),
-  //     context: context,
-  //     builder: (ctx) {
-  //       return CustomBottomSheet(
-  //         child: SignUpScreen(),
-  //       );
-  //     },
-  //   );
-  // }
-
-  // void _goToSignInPage(BuildContext context) {
-  //   showModalBottomSheet(
-  //     enableDrag: true,
-  //     isDismissible: false,
-  //     isScrollControlled: true,
-  //     shape: RoundedRectangleBorder(
-  //       borderRadius: BorderRadius.vertical(
-  //         top: Radius.circular(32),
-  //       ),
-  //     ),
-  //     context: context,
-  //     builder: (ctx) {
-  //       return CustomBottomSheet(
-  //         child: SignInScreen(),
-  //       );
-  //     },
-  //   );
-  // }
-
   void _updateIndicator(int index) {
     setState(
       () {
@@ -204,5 +170,15 @@ class _IntroScreenState extends State<IntroScreen> {
 
   bool _firstPage() {
     return (currentPage == 00);
+  }
+
+  void goToSignUpScreen() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => SignUpScreen(),
+        fullscreenDialog: true,
+      ),
+    );
   }
 }

@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:footsteps/screens/0_auth_screens/widgets/intro_model.dart';
+import 'package:footsteps/styles/text_theme.dart';
 
 class IntroList extends StatelessWidget {
   IntroList({
-    this.onPageChanged,
-    @required this.messages,
-    this.pageController,
+    required this.onPageChanged,
+    required this.messages,
+    required this.pageController,
   });
   final List<IntroMessage> messages;
   final Function(int) onPageChanged;
@@ -21,7 +22,6 @@ class IntroList extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 16),
             child: SingleChildScrollView(
               child: Column(
-                //mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   SizedBox(
                     height: 75,
@@ -33,20 +33,12 @@ class IntroList extends StatelessWidget {
                   ),
                   Text(
                     messages[index].title,
-                    style: TextStyle(
-                      fontSize: 26,
-                      fontWeight: FontWeight.w700,
-                      color: Colors.black,
-                    ),
+                    style: AppTextStyle.headline4,
                   ),
                   SizedBox(height: 16),
                   Text(
                     messages[index].description,
-                    style: TextStyle(
-                      fontSize: 16,
-                      color: Colors.black,
-                      height: 1.5,
-                    ),
+                    style: AppTextStyle.bodyText1,
                     maxLines: 3,
                     textAlign: TextAlign.center,
                   ),

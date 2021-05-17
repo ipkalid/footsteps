@@ -1,89 +1,66 @@
 import 'package:flutter/material.dart';
+import 'package:footsteps/styles/app_colors.dart';
 
-class AuthTextField extends StatefulWidget {
-  AuthTextField(
-      {this.label,
-      @required this.controller,
-      this.type = TextInputType.text,
-      this.isPassword = false,
-      this.onEditingComplete});
-  final TextInputType type;
-  final String label;
-  final bool isPassword;
-  final void Function() onEditingComplete;
+class AuthTextField extends StatelessWidget {
+  const AuthTextField({
+    Key? key,
+    required this.controller,
+    required this.label,
+    this.keyboardType,
+    this.icon,
+    this.hint,
+    this.isPassword = false,
+  }) : super(key: key);
 
   final TextEditingController controller;
-
-  @override
-  _AuthTextFieldState createState() => _AuthTextFieldState();
-}
-
-class _AuthTextFieldState extends State<AuthTextField> {
-  bool showPassword;
-  @override
-  void initState() {
-    super.initState();
-    showPassword = widget.isPassword;
-  }
+  final String label;
+  final TextInputType? keyboardType;
+  final IconData? icon;
+  final String? hint;
+  final bool isPassword;
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: 48,
-      child: TextFormField(
-        textAlign: TextAlign.center,
-        textDirection: TextDirection.ltr,
-        obscureText: showPassword,
-        controller: widget.controller,
-        keyboardType: widget.type,
-        cursorColor: Colors.blue[200],
-        onEditingComplete: widget.onEditingComplete,
-        onChanged: (value) {
-          setState(
-            () {},
-          );
-        },
-        textAlignVertical: TextAlignVertical.center,
-        decoration: InputDecoration(
-          floatingLabelBehavior: FloatingLabelBehavior.always,
-          hintText: (widget.label == null) ? "" : widget.label,
-          // hintStyle: TextStyle(fontSize: 11),
-          filled: true,
-          fillColor: (widget.controller.text.length > 0)
-              ? Colors.blue[200]
-              : Colors.transparent, //Color(0xffE4E3E3),
-          border: OutlineInputBorder(
-            borderSide: BorderSide(
-              color: (widget.controller.text.length > 0)
-                  ? Colors.transparent
-                  : Colors.black,
+    return Column(
+      children: [
+        Row(
+          children: [
+            Text(
+              label,
+              style: TextStyle(
+                fontWeight: FontWeight.w600,
+                color: AppColor.darkGreen,
+              ),
             ),
-            borderRadius: BorderRadius.all(
-              Radius.circular(6.0),
-            ),
+          ],
+        ),
+        TextField(
+          cursorColor: AppColor.lightGreen,
+          keyboardType: keyboardType,
+          controller: controller,
+          obscureText: isPassword,
+          style: TextStyle(
+            color: AppColor.darkGreen,
+            fontSize: 22,
+            fontWeight: FontWeight.w500,
           ),
-          enabledBorder: OutlineInputBorder(
-            borderSide: BorderSide(
-              color: (widget.controller.text.length > 0)
-                  ? Colors.transparent
-                  : Colors.black,
+          decoration: InputDecoration(
+            hintText: hint,
+            prefixIcon: Icon(
+              icon,
+              color: AppColor.lightGreen,
             ),
-            borderRadius: BorderRadius.all(
-              Radius.circular(6.0),
+            prefix: Text("   "),
+            prefixIconConstraints: BoxConstraints(
+              minWidth: 0,
+              minHeight: 0,
             ),
-          ),
-          focusedBorder: OutlineInputBorder(
-            borderSide: BorderSide(
-              color: (widget.controller.text.length > 0)
-                  ? Colors.transparent
-                  : Colors.black,
-            ),
-            borderRadius: BorderRadius.all(
-              Radius.circular(6.0),
+            focusedBorder: UnderlineInputBorder(
+              borderSide: BorderSide(color: AppColor.lightGreen, width: 3),
             ),
           ),
         ),
-      ),
+      ],
     );
   }
 }

@@ -1,7 +1,5 @@
-import 'package:flutter/material.dart';
-
 class IntroMessage {
-  IntroMessage({this.image, this.title, this.description});
+  IntroMessage({required this.image, required this.title, required this.description});
   String image;
   String title;
   String description;
