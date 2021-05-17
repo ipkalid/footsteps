@@ -28,6 +28,11 @@ dependencies:
   cupertino_icons: ^1.0.2
   google_fonts: ^2.1.0
 
+  #FireBase related
+  firebase_core: "^1.1.1"
+  firebase_auth: ^1.1.4
+
+
 
 dev_dependencies:
   flutter_launcher_icons: "^0.9.0"
