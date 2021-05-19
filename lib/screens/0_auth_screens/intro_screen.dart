@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:footsteps/helpers/image_path.dart';
+import 'package:footsteps/screens/0_auth_screens/signin_screen.dart';
 import 'package:footsteps/screens/0_auth_screens/signup_screen.dart';
 import 'package:footsteps/screens/0_auth_screens/widgets/intro_list.dart';
 import 'package:footsteps/screens/0_auth_screens/widgets/intro_model.dart';
@@ -108,8 +109,9 @@ class _IntroScreenState extends State<IntroScreen> {
                   TextButton(
                     style: TextButton.styleFrom(
                       minimumSize: Size(100, 0),
-                      primary:
-                          _lastPage() ? Colors.blue[300] : AppColor.lightGreen,
+                      primary: _lastPage()
+                          ? AppColor.darkGreen
+                          : AppColor.lightGreen,
                     ),
                     child: Text(
                       _lastPage() ? "Sign In" : "Next",
@@ -118,7 +120,7 @@ class _IntroScreenState extends State<IntroScreen> {
                       ),
                     ),
                     onPressed: () => _lastPage()
-                        ? null
+                        ? goToSignInScreen()
                         : pageController.nextPage(
                             duration: Duration(milliseconds: 400),
                             curve: Curves.ease,
@@ -177,6 +179,16 @@ class _IntroScreenState extends State<IntroScreen> {
       context,
       MaterialPageRoute(
         builder: (context) => SignUpScreen(),
+        fullscreenDialog: true,
+      ),
+    );
+  }
+
+  void goToSignInScreen() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => SignInScreen(),
         fullscreenDialog: true,
       ),
     );

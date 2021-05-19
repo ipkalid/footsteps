@@ -1,6 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.footsteps">
    <application
+        android:requestLegacyExternalStorage="true"
         android:label="footsteps"
         android:icon="@mipmap/launcher_icon">
         <activity

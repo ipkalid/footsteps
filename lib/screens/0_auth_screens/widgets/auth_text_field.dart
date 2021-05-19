@@ -10,6 +10,7 @@ class AuthTextField extends StatelessWidget {
     this.icon,
     this.hint,
     this.isPassword = false,
+    this.suffix,
   }) : super(key: key);
 
   final TextEditingController controller;
@@ -18,6 +19,7 @@ class AuthTextField extends StatelessWidget {
   final IconData? icon;
   final String? hint;
   final bool isPassword;
+  final String? suffix;
 
   @override
   Widget build(BuildContext context) {
@@ -28,6 +30,7 @@ class AuthTextField extends StatelessWidget {
             Text(
               label,
               style: TextStyle(
+                fontSize: 16,
                 fontWeight: FontWeight.w600,
                 color: AppColor.darkGreen,
               ),
@@ -46,14 +49,24 @@ class AuthTextField extends StatelessWidget {
           ),
           decoration: InputDecoration(
             hintText: hint,
-            prefixIcon: Icon(
-              icon,
-              color: AppColor.lightGreen,
-            ),
-            prefix: Text("   "),
-            prefixIconConstraints: BoxConstraints(
-              minWidth: 0,
-              minHeight: 0,
+            prefixIcon: icon == null
+                ? null
+                : Icon(
+                    icon,
+                    color: AppColor.lightGreen,
+                  ),
+            prefix: icon == null ? null : Text("   "),
+            prefixIconConstraints: icon == null
+                ? null
+                : BoxConstraints(
+                    minWidth: 0,
+                    minHeight: 0,
+                  ),
+            suffixText: suffix == null ? null : suffix,
+            suffixStyle: TextStyle(
+              color: AppColor.darkGreen,
+              fontSize: 22,
+              fontWeight: FontWeight.w500,
             ),
             focusedBorder: UnderlineInputBorder(
               borderSide: BorderSide(color: AppColor.lightGreen, width: 3),
