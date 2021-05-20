@@ -8,6 +8,7 @@ class ImagePath {
   static const walk = "assets/illustrations/walk.png";
   static const win = "assets/illustrations/winners.png";
   static const sign = "assets/illustrations/sign.png";
+  static const tree = "assets/illustrations/tree.png";
 
   //icons
   static const user = "assets/icons/user.png";
@@ -16,4 +17,8 @@ class ImagePath {
   static const footFilled = "assets/icons/soccer-filled.png";
   static const diamond = "assets/icons/diamond.png";
   static const diamondFilled = "assets/icons/diamond-filled.png";
+
+  //lottie
+  static const loading = "assets/lottie/Loading.json";
+  static const walking = "assets/lottie/walking.json";
 }

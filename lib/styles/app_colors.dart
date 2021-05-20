@@ -7,4 +7,5 @@ class AppColor {
 
   static const lightGreen = Color(0xff00BFA6);
   static const darkGreen = Color(0xff009480);
+  static const superDarkGreen = Color(0xff255F58);
 }

@@ -1,11 +1,16 @@
 import 'dart:io';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:footsteps/screens/0_auth_screens/widgets/auth_text_field.dart';
+import 'package:footsteps/screens/1_home_app_screens/app_bar.dart';
 import 'package:footsteps/styles/app_colors.dart';
 import 'package:footsteps/widgets/main_button.dart';
 import 'package:images_picker/images_picker.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:path/path.dart' as path;
 
 class PersonalDetailsScreen extends StatefulWidget {
   PersonalDetailsScreen({Key? key}) : super(key: key);
@@ -15,13 +20,28 @@ class PersonalDetailsScreen extends StatefulWidget {
 }
 
 class _PersonalDetailsScreenState extends State<PersonalDetailsScreen> {
+  FirebaseFirestore? firestore;
+  CollectionReference? users;
+  FirebaseStorage storage = FirebaseStorage.instance;
+  User? user;
+
   File? imageAvatar;
   String? imageAvatarPath;
   DateTime? birthDayDate;
+  String? photoURL;
 
   TextEditingController nameController = TextEditingController();
   TextEditingController weightController = TextEditingController();
   TextEditingController heightController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    firestore = FirebaseFirestore.instance;
+    users = FirebaseFirestore.instance.collection('users');
+    storage = FirebaseStorage.instance;
+    user = FirebaseAuth.instance.currentUser;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -124,7 +144,7 @@ class _PersonalDetailsScreenState extends State<PersonalDetailsScreen> {
                         style: TextStyle(
                           color: (birthDayDate == null)
                               ? AppColor.grey
-                              : AppColor.lightGreen,
+                              : AppColor.darkGreen,
                           fontSize: 22,
                           fontWeight: FontWeight.w500,
                         ),
@@ -136,7 +156,9 @@ class _PersonalDetailsScreenState extends State<PersonalDetailsScreen> {
             ],
           ),
           SizedBox(height: 64),
-          MainButton(onPressed: () {}, label: "Rigister Your Account")
+          MainButton(
+              onPressed: () => _updateUserAccount(),
+              label: "Rigister Your Account")
         ],
       ),
     );
@@ -154,11 +176,23 @@ class _PersonalDetailsScreenState extends State<PersonalDetailsScreen> {
       maxSize: 500,
     ).then((image) {
       setState(() {
-        print(image![0].toString());
-        imageAvatar = File(image[0].path);
-        print(imageAvatar!.path);
+        //print(image![0].toString());
+        imageAvatar = File(image![0].path);
+        //print(imageAvatar!.path);
+        //print(imageAvatar);
+        if (imageAvatar != null) {
+          _uploadImageToFireStorage(image: imageAvatar!);
+        }
       });
     });
+  }
+
+  void _uploadImageToFireStorage({required File image}) async {
+    var fileName = path.basename(image.path);
+    var snapshot = await storage.ref().child('images/$fileName').putFile(image);
+    var downloadUrl = await snapshot.ref.getDownloadURL();
+
+    user!.updateProfile(photoURL: downloadUrl);
   }
 
   void _selectDate() async {
@@ -174,5 +208,24 @@ class _PersonalDetailsScreenState extends State<PersonalDetailsScreen> {
         birthDayDate = newDate;
       });
     }
+  }
+
+  void _updateUserAccount() {
+    user!.updateProfile(displayName: nameController.text);
+
+    users!
+        .add({
+          'uid': user!.uid,
+          'birth_day': birthDayDate,
+          'height': int.parse(heightController.text),
+          'weight': int.parse(weightController.text)
+        })
+        .then((value) => _goToHomeApp())
+        .catchError((error) => print("Failed to add user: $error"));
+    print(user!.displayName);
+  }
+
+  void _goToHomeApp() {
+    Navigator.pushReplacementNamed(context, HomeAppBar.routeName);
   }
 }
