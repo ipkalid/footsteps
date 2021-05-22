@@ -4,6 +4,7 @@ import 'package:footsteps/screens/0_auth_screens/signin_screen.dart';
 import 'package:footsteps/screens/0_auth_screens/signup_screen.dart';
 import 'package:footsteps/screens/0_auth_screens/widgets/intro_list.dart';
 import 'package:footsteps/screens/0_auth_screens/widgets/intro_model.dart';
+import 'package:footsteps/services/firebase_auth.dart';
 import 'package:footsteps/styles/app_colors.dart';
 import 'package:footsteps/widgets/main_button.dart';
 
@@ -14,6 +15,7 @@ class IntroScreen extends StatefulWidget {
 }
 
 class _IntroScreenState extends State<IntroScreen> {
+  AuthService auth = AuthService();
   int currentPage = 0;
   PageController pageController = PageController(initialPage: 0);
   List<IntroMessage> introMessages = [

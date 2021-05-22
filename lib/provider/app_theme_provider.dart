@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:footsteps/helpers/app_prefrence.dart';
 
 class AppThemeProvider with ChangeNotifier {
-  int _currentIndex = 0;
-  int get currentIndex => _currentIndex;
-  set currentIndex(int index) {
-    _currentIndex = index;
+  AppPrefrence appPrefrence = AppPrefrence();
+  bool _darkTheme = false;
+
+  bool get darkTheme => _darkTheme;
+
+  set darkTheme(bool value) {
+    _darkTheme = value;
+    appPrefrence.setTheme(value);
     notifyListeners();
   }
 }

@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:footsteps/helpers/image_path.dart';
-import 'package:footsteps/provider/app_bar_provider.dart';
-import 'package:footsteps/provider/app_theme_provider.dart';
 import 'package:footsteps/provider/step_counter_provider.dart';
-import 'package:footsteps/screens/1_home_app_screens/1_home_screens/home_screen.dart';
-import 'package:footsteps/screens/1_home_app_screens/3_profile_screen/profile_screen.dart';
-import 'package:footsteps/styles/app-theme.dart';
-import 'package:pedometer/pedometer.dart';
-import 'package:provider/provider.dart';
 
-import '2_leaderboard_screen/leader_board_screen.dart';
+import 'package:footsteps/screens/1_home_app_screens/1_home_screens/home_screen.dart';
+import 'package:footsteps/screens/1_home_app_screens/2_redeem_screens/redeem_screen.dart';
+import 'package:footsteps/screens/1_home_app_screens/3_leaderboard_scree/leader_board_screen.dart';
+import 'package:footsteps/screens/1_home_app_screens/4_history_screen/history_screen.dart';
+import 'package:footsteps/screens/1_home_app_screens/5_profile_screen/profile_screen.dart';
+import 'package:footsteps/styles/app-theme.dart';
+import 'package:provider/provider.dart';
 
 class HomeAppBar extends StatefulWidget {
   static const routeName = '/home-app-bar';
@@ -19,38 +18,38 @@ class HomeAppBar extends StatefulWidget {
 }
 
 class _HomeAppBarState extends State<HomeAppBar> {
+  //Screens
   HomeScreen? homeScreen;
+  RedeemScreen? redeemScreen;
   LeaderBoardScreen? leaderBoardScreen;
+  HistoryScreen? historyScreen;
   AccountScreen? account;
   List? pages;
   Widget? currentPage;
 
+  int currentIndex = 0;
+
   //final PageStorageBucket bucket = PageStorageBucket();
 
   final Key homeScreenKey = PageStorageKey('homeScreenKey');
+  final Key redeemScreenkey = PageStorageKey('redeemScreenkey');
   final Key leaderBoardScreenKey = PageStorageKey('leaderBoardScreenKey');
+  final Key historyScreenkey = PageStorageKey('historyScreenkey');
   final Key accountKey = PageStorageKey('accountKey');
-
-  late Stream<StepCount> _stepCountStream;
-  late Stream<PedestrianStatus> _pedestrianStatusStream;
-  String _status = '?', _steps = '?';
 
   @override
   void initState() {
     super.initState();
-    homeScreen = HomeScreen(
-      key: homeScreenKey,
-    );
-    leaderBoardScreen = LeaderBoardScreen(
-      key: leaderBoardScreenKey,
-    );
-
-    account = AccountScreen(
-      key: accountKey,
-    );
+    homeScreen = HomeScreen(key: homeScreenKey);
+    redeemScreen = RedeemScreen(key: redeemScreenkey);
+    leaderBoardScreen = LeaderBoardScreen(key: leaderBoardScreenKey);
+    historyScreen = HistoryScreen(key: historyScreenkey);
+    account = AccountScreen(key: accountKey);
     pages = [
       homeScreen,
+      redeemScreen,
       leaderBoardScreen,
+      historyScreen,
       account,
     ];
     currentPage = homeScreen;
@@ -58,20 +57,22 @@ class _HomeAppBarState extends State<HomeAppBar> {
 
   @override
   Widget build(BuildContext context) {
-    var appBarProvider = Provider.of<AppBarProvider>(context);
+    var stepCounterProvider = Provider.of<StepCounterProvider>(context);
+    stepCounterProvider.initPlatformState();
 
-    //var appThemeProvider = Provider.of<AppThemeProvider>(context);
     return MaterialApp(
       theme: AppTheme.lightTheme,
       darkTheme: AppTheme.darkTheme,
-      //themeMode: ThemeMode.dark,
+      //themeMode: .dark,
       home: Scaffold(
         body: currentPage,
         bottomNavigationBar: BottomNavigationBar(
-          currentIndex: appBarProvider.currentIndex,
+          currentIndex: currentIndex,
           onTap: (index) {
-            appBarProvider.currentIndex = index;
-            currentPage = pages![index];
+            currentIndex = index;
+            setState(() {
+              currentPage = pages![index];
+            });
           },
           items: [
             BottomNavigationBarItem(
@@ -87,6 +88,17 @@ class _HomeAppBarState extends State<HomeAppBar> {
             ),
             BottomNavigationBarItem(
               icon: Image.asset(
+                ImagePath.redeemFilled,
+                width: 30,
+              ),
+              activeIcon: Image.asset(
+                ImagePath.redeem,
+                width: 30,
+              ),
+              label: 'Redeem',
+            ),
+            BottomNavigationBarItem(
+              icon: Image.asset(
                 ImagePath.diamondFilled,
                 width: 30,
               ),
@@ -94,7 +106,18 @@ class _HomeAppBarState extends State<HomeAppBar> {
                 ImagePath.diamond,
                 width: 30,
               ),
-              label: 'Leader Board',
+              label: 'Leaderboard',
+            ),
+            BottomNavigationBarItem(
+              icon: Image.asset(
+                ImagePath.historyFilled,
+                width: 30,
+              ),
+              activeIcon: Image.asset(
+                ImagePath.history,
+                width: 30,
+              ),
+              label: 'History',
             ),
             BottomNavigationBarItem(
               icon: Image.asset(
@@ -111,52 +134,5 @@ class _HomeAppBarState extends State<HomeAppBar> {
         ),
       ),
     );
-  }
-
-  void initPlatformState() {
-    _pedestrianStatusStream = Pedometer.pedestrianStatusStream;
-    _pedestrianStatusStream
-        .listen(onPedestrianStatusChanged)
-        .onError(onPedestrianStatusError);
-
-    _stepCountStream = Pedometer.stepCountStream;
-    _stepCountStream.listen(onStepCount).onError(onStepCountError);
-
-    if (!mounted) return;
-  }
-
-  void onStepCount(StepCount event) {
-    var stepCounterProvider = Provider.of<StepCounterProvider>(context);
-
-    print(event);
-    stepCounterProvider.steps = event.steps.toString();
-    // setState(() {
-    //   _steps = event.steps.toString();
-    // });
-  }
-
-  void onPedestrianStatusChanged(PedestrianStatus event) {
-    print(event);
-    setState(() {
-      _status = event.status;
-    });
-  }
-
-  void onPedestrianStatusError(error) {
-    print('onPedestrianStatusError: $error');
-    setState(() {
-      _status = 'Pedestrian Status not available';
-    });
-    print(_status);
-  }
-
-  void onStepCountError(error) {
-    var stepCounterProvider = Provider.of<StepCounterProvider>(context);
-
-    print('onStepCountError: $error');
-    stepCounterProvider.steps = 'Step Count not available';
-    // setState(() {
-    //   _steps = 'Step Count not available';
-    // });
   }
 }

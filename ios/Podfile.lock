@@ -332,6 +332,10 @@ PODS:
   - pedometer (0.0.1):
     - Flutter
   - PromisesObjC (1.2.12)
+  - shared_preferences (0.0.1):
+    - Flutter
+  - url_launcher (0.0.1):
+    - Flutter
   - ZLPhotoBrowser (4.1.5):
     - ZLPhotoBrowser/Core (= 4.1.5)
   - ZLPhotoBrowser/Core (4.1.5)
@@ -345,6 +349,8 @@ DEPENDENCIES:
   - images_picker (from `.symlinks/plugins/images_picker/ios`)
   - path_provider (from `.symlinks/plugins/path_provider/ios`)
   - pedometer (from `.symlinks/plugins/pedometer/ios`)
+  - shared_preferences (from `.symlinks/plugins/shared_preferences/ios`)
+  - url_launcher (from `.symlinks/plugins/url_launcher/ios`)
 
 SPEC REPOS:
   trunk:
@@ -383,6 +389,10 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/path_provider/ios"
   pedometer:
     :path: ".symlinks/plugins/pedometer/ios"
+  shared_preferences:
+    :path: ".symlinks/plugins/shared_preferences/ios"
+  url_launcher:
+    :path: ".symlinks/plugins/url_launcher/ios"
 
 SPEC CHECKSUMS:
   abseil: 6c8eb7892aefa08d929b39f9bb108e5367e3228f
@@ -409,6 +419,8 @@ SPEC CHECKSUMS:
   path_provider: abfe2b5c733d04e238b0d8691db0cfd63a27a93c
   pedometer: 381969883680ade42559782cc41a3bbd453d8234
   PromisesObjC: 3113f7f76903778cf4a0586bd1ab89329a0b7b97
+  shared_preferences: af6bfa751691cdc24be3045c43ec037377ada40d
+  url_launcher: 6fef411d543ceb26efce54b05a0a40bfd74cbbef
   ZLPhotoBrowser: 809878607ea92e9411c580797ce1be23896b8d7f
 
 PODFILE CHECKSUM: 3efef3e4c4241ddf19165efb8229df7447127bfd

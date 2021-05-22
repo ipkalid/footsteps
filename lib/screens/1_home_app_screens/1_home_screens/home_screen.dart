@@ -3,7 +3,6 @@ import 'package:footsteps/helpers/image_path.dart';
 import 'package:footsteps/provider/step_counter_provider.dart';
 import 'package:footsteps/styles/app_colors.dart';
 import 'package:lottie/lottie.dart';
-import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
   HomeScreen({Key? key}) : super(key: key);
@@ -15,13 +14,14 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
-    var stepCounterProvider = Provider.of<StepCounterProvider>(context);
-    print("object");
+    double line = (StepCounterProvider().steps > 0)
+        ? StepCounterProvider().steps / 5000
+        : 0;
     return Scaffold(
       appBar: AppBar(
         title: Text(
           "Home",
-          style: TextStyle(color: Colors.black),
+          //  style: TextStyle(color: Colors.black),
         ),
       ),
       body: Padding(
@@ -33,17 +33,30 @@ class _HomeScreenState extends State<HomeScreen> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
-                    "0",
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
+                  SizedBox(
+                    width: 100,
+                    child: Text(
+                      "0",
+                      style:
+                          TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
+                    ),
                   ),
                   Text(
-                    stepCounterProvider.steps,
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
+                    "${StepCounterProvider().steps}",
+                    style: TextStyle(
+                      fontSize: 30,
+                      fontWeight: FontWeight.w500,
+                      color: AppColor.lightGreen,
+                    ),
                   ),
-                  Text(
-                    "1000",
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
+                  SizedBox(
+                    width: 100,
+                    child: Text(
+                      "5000",
+                      style:
+                          TextStyle(fontSize: 25, fontWeight: FontWeight.w500),
+                      textAlign: TextAlign.end,
+                    ),
                   ),
                 ],
               ),
@@ -71,7 +84,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ),
                     Container(
-                      width: MediaQuery.of(context).size.width * 0.3,
+                      width: MediaQuery.of(context).size.width * line,
                       height: 5,
                       color: AppColor.darkGreen,
                     ),
@@ -81,13 +94,17 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             SizedBox(height: 16),
             Stack(
-              alignment: AlignmentDirectional.center,
+              alignment: AlignmentDirectional.bottomCenter,
               children: [
-                Image.asset(ImagePath.tree),
+                Image.asset(
+                  ImagePath.tree,
+                ),
                 Container(
+                  margin: EdgeInsets.only(top: 9),
                   child: Lottie.asset(
                     ImagePath.walking,
-                    height: 230,
+                    height: 230, fit: BoxFit.contain,
+                    // animate: false,
                   ),
                 ),
               ],

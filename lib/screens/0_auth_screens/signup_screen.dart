@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:footsteps/helpers/alert_dialog.dart';
 import 'package:footsteps/helpers/image_path.dart';
+import 'package:footsteps/main.dart';
 import 'package:footsteps/screens/0_auth_screens/personal_details.dart';
 import 'package:footsteps/screens/0_auth_screens/widgets/auth_text_field.dart';
 import 'package:footsteps/styles/app_colors.dart';
 import 'package:footsteps/widgets/main_button.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 
 class SignUpScreen extends StatefulWidget {
   SignUpScreen({Key? key}) : super(key: key);
@@ -15,7 +14,6 @@ class SignUpScreen extends StatefulWidget {
 }
 
 class _SignUpScreenState extends State<SignUpScreen> {
-  final auth = FirebaseAuth.instance;
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
 
@@ -81,54 +79,18 @@ class _SignUpScreenState extends State<SignUpScreen> {
               ),
               SizedBox(height: 64),
               MainButton(
-                  onPressed: () {
-                    _register();
-                  },
+                  onPressed: () => auth.createUserWithEmailAndPassword(
+                        context,
+                        email: emailController.text,
+                        password: passwordController.text,
+                        onSignUp: () => goToPersonalDetailsScreen(),
+                      ),
                   label: "Sign Up"),
             ],
           ),
         ),
       ),
     );
-  }
-
-  void _register() async {
-    // UserCredential userCredential = await auth.createUserWithEmailAndPassword(
-    //     email: "barry.allen@example.com", password: "SuperSecretPassword!");
-    try {
-      UserCredential userCredential = await auth.createUserWithEmailAndPassword(
-        email: emailController.text,
-        password: passwordController.text,
-      );
-
-      User? user = userCredential.user;
-
-      user!.sendEmailVerification();
-      goToPersonalDetailsScreen();
-    } on FirebaseAuthException catch (e) {
-      if (e.code == 'weak-password') {
-        print('The password provided is too weak.');
-        showAlertDialog(
-          context,
-          title: "Error",
-          content: "The password provided is too weak.",
-        );
-      } else if (e.code == 'email-already-in-use') {
-        print('The account already exists for that email.');
-        showAlertDialog(
-          context,
-          title: 'Error',
-          content: 'The account already exists for that email.',
-        );
-      }
-    } catch (e) {
-      print(e);
-      showAlertDialog(
-        context,
-        title: 'Error',
-        content: e.toString(),
-      );
-    }
   }
 
   void goToPersonalDetailsScreen() {

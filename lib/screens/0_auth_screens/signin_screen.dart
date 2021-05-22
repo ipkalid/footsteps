@@ -1,7 +1,6 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:footsteps/helpers/alert_dialog.dart';
 import 'package:footsteps/helpers/image_path.dart';
+import 'package:footsteps/main.dart';
 import 'package:footsteps/screens/0_auth_screens/widgets/auth_text_field.dart';
 import 'package:footsteps/styles/app_colors.dart';
 import 'package:footsteps/widgets/main_button.dart';
@@ -20,7 +19,6 @@ class _SignInScreenState extends State<SignInScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      //resizeToAvoidBottomInset: false,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
@@ -79,38 +77,18 @@ class _SignInScreenState extends State<SignInScreen> {
                 isPassword: true,
               ),
               SizedBox(height: 64),
-              MainButton(onPressed: () => signin(), label: "Sign in"),
+              MainButton(
+                  onPressed: () => auth.signInWithEmailAndPassword(
+                        context,
+                        email: emailController.text,
+                        password: emailController.text,
+                        onlogin: () => print("object"),
+                      ),
+                  label: "Sign in"),
             ],
           ),
         ),
       ),
     );
-  }
-
-  void signin() async {
-    try {
-      UserCredential userCredential =
-          await FirebaseAuth.instance.signInWithEmailAndPassword(
-        email: emailController.text,
-        password: passwordController.text,
-      );
-      User? user = userCredential.user;
-      if (!user!.emailVerified) {
-        showAlertDialog(context,
-            title: "Error", content: "Vertify your email to log in");
-        user.sendEmailVerification();
-      }
-      //print(userToken);
-    } on FirebaseAuthException catch (e) {
-      if (e.code == 'user-not-found') {
-        showAlertDialog(context,
-            title: "Error", content: "Wrong Email or Password");
-      } else if (e.code == 'wrong-password') {
-        showAlertDialog(context,
-            title: "Error", content: "Wrong Email or Password");
-
-        print('Wrong password provided for that user.');
-      }
-    }
   }
 }
